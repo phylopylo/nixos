@@ -46,6 +46,7 @@
     jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processor https://github.com/mikefarah/yq
     fzf # A command-line fuzzy finder
+    shellcheck
 
     # networking tools
     dnsutils  # `dig` + `nslookup`
