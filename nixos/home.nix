@@ -33,6 +33,11 @@
     kitty
     rofi
     wl-clipboard
+    htop
+    nautilus
+    pavucontrol
+
+
     mako # sway notif system
 
     # archives
