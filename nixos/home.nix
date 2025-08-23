@@ -1,33 +1,30 @@
 { config, pkgs, lib, ... }:
 
+let
+  username = "ph";
+in
 {
-  home.username = "ph";
-  home.homeDirectory = "/home/ph";
+  # User Setup
+  home.username = "${username}";
+  home.homeDirectory = "/home/${username}";
 
-  # link the configuration file in current directory to the specified location in home directory
-  # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
+  let
+    enableDesktopApps = false;
+  in
+  with pkgs;  {
+    desktopApps = lib.optionals enableDesktopApps [
+      libreoffice
+      discord
+    ];
+    home.packages = desktopApps;
+  }
+      
 
-  # link all files in `./scripts` to `~/.config/i3/scripts`
-  # home.file.".config/i3/scripts" = {
-  #   source = ./scripts;
-  #   recursive = true;   # link recursively
-  #   executable = true;  # make all files executable
-  # };
-
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
-
-  # Packages that should be installed to the user profile.
+  # Packages
   home.packages = with pkgs; [
-    # here is some command line tools I use frequently
-    # feel free to add your own or remove some of them
 
-    libreoffice
     wget
     tmux
-    discord
     sway
     brave
     kitty
@@ -47,10 +44,10 @@
     p7zip
 
     # utils
-    ripgrep # recursively searches directories for a regex pattern
-    jq # A lightweight and flexible command-line JSON processor
-    yq-go # yaml processor https://github.com/mikefarah/yq
-    fzf # A command-line fuzzy finder
+    ripgrep
+    jq
+    yq-go
+    fzf
     shellcheck
 
     # networking tools
@@ -132,11 +129,13 @@
       gs="git status";
       t="tmux";
       ta="tmux attach";
-      b="vim ~/.bashrc";
+      b="vim -R ~/.bashrc"; # Readonly now because you should be using the nix config, not editing the bashrc yourself
       py="python3";
       config="sudoedit /etc/nixos/configuration.nix";
       home="sudoedit /etc/nixos/home.nix";
       switch="sudo nixos-rebuild switch";
+      homeswitch="home && switch";
+      validate="sudo nixos-rebuild dry-build";
       unlock_brave_profile="rm -rf .config/BraveSoftware/Brave-Browser/SingletonLock";
     };
   };
