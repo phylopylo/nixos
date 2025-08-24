@@ -2,48 +2,60 @@
 
 let
   username = "ph";
-in
-{
-  # User Setup
-  home.username = "${username}";
-  home.homeDirectory = "/home/${username}";
+  enableDevTools      = true;
+  enableSway          = true;
+  enableGnome         = false; # Nonfunctional. write (enableSway or enableGnome) assert. Add GNOME packages.
+  enableDesktopApps   = true;
+  enableSystemApps    = true;
+  enableArchiveTools  = true;
+  enableSystemUtils   = true;
+  enableUnixTools     = true;
 
-  let
-    enableDesktopApps = false;
-  in
-  with pkgs;  {
-    desktopApps = lib.optionals enableDesktopApps [
-      libreoffice
-      discord
-    ];
-    home.packages = desktopApps;
-  }
-      
-
-  # Packages
-  home.packages = with pkgs; [
-
-    wget
-    tmux
-    sway
+  requiredPackages = with pkgs; [
     brave
+    google-chrome
+  ];
+
+  devTools = with pkgs; lib.optionals enableDevTools [
+    tmux
     kitty
+  ];
+
+  sway = with pkgs; lib.optionals enableSway [
     rofi
     wl-clipboard
-    htop
+    mako
+  ];
+
+  desktopApps = with pkgs; lib.optionals enableDesktopApps [
+    libreoffice
+    discord
+  ];
+
+  systemApps = with pkgs; lib.optionals enableSystemApps [
     nautilus
     pavucontrol
+  ];
 
-
-    mako # sway notif system
-
-    # archives
+  archiveTools = with pkgs; lib.optionals enableArchiveTools [
     zip
     xz
     unzip
     p7zip
+  ];
 
-    # utils
+  systemUtils = with pkgs; lib.optionals enableSystemUtils [
+    sysstat
+    lm_sensors # for `sensors` command
+    ethtool
+    pciutils # lspci
+    usbutils # lsusb
+  ];
+
+  unixTools = with pkgs; lib.optionals enableUnixTools [
+    htop
+    wget
+
     ripgrep
     jq
     yq-go
@@ -82,19 +94,27 @@ in
     strace # system call monitoring
     ltrace # library call monitoring
     lsof # list open files
-
-    # system tools
-    sysstat
-    lm_sensors # for `sensors` command
-    ethtool
-    pciutils # lspci
-    usbutils # lsusb
   ];
+in
+{
+  # User Setup
+  home.username = "${username}";
+  home.homeDirectory = "/home/${username}";
 
+  # Packages
+  home.packages = requiredPackages
+               ++ devTools
+               ++ sway
+               ++ desktopApps
+               ++ systemApps
+               ++ archiveTools
+               ++ unixTools
+               ++ systemUtils;
+  
   services.gnome-keyring.enable = true;
 
   wayland.windowManager.sway = {
-    enable = true;
+    enable = enableSway;
 
     config = {
       modifier = "Mod4"; # Set mod to Super key
@@ -123,19 +143,27 @@ in
     enable = true;
     enableCompletion = true;
     shellAliases = {
+      # Basic Shell Interaction
       l="ls -la";
       c="clear";
+
+      # Software Development
       g="git";
       gs="git status";
       t="tmux";
       ta="tmux attach";
-      b="vim -R ~/.bashrc"; # Readonly now because you should be using the nix config, not editing the bashrc yourself
       py="python3";
+
+      # NixOS Config
       config="sudoedit /etc/nixos/configuration.nix";
       home="sudoedit /etc/nixos/home.nix";
       switch="sudo nixos-rebuild switch";
       homeswitch="home && switch";
       validate="sudo nixos-rebuild dry-build";
+      llm_debug="cat /etc/nixos/home.nix > out.log && switch --show-trace &>> out.log";
+
+      # Everything Else
+      b="vim -R ~/.bashrc"; # Readonly now because you should be using the nix config, not editing the bashrc yourself
       unlock_brave_profile="rm -rf .config/BraveSoftware/Brave-Browser/SingletonLock";
     };
   };
