@@ -4,6 +4,9 @@
 
 { config, pkgs, lib, ... }:
 
+let
+  enableSSH = true;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -58,6 +61,20 @@
     };
   };
 
+  services.openssh = {
+    enable = enableSSH;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = true;
+      AllowUsers = [ "ph" ]; # Allows all users by default. Can be [ "user1" "user2" ]
+      UseDns = true;
+      X11Forwarding = false;
+      PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+    };
+  };
+
+  # Open the SSH port in the firewall
+  networking.firewall.allowedTCPPorts = if enableSSH then [ 22 ] else [];
 
   # Configure keymap in X11
   services.xserver.xkb = {

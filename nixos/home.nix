@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  username = "ph";
+  username            = "ph";
   enableDevTools      = true;
   enableSway          = true;
   enableGnome         = false; # Nonfunctional. write (enableSway or enableGnome) assert. Add GNOME packages.
@@ -133,6 +133,30 @@ in
   programs.vim.enable = true;
   programs.vim.defaultEditor = true;
 
+  programs.tmux = {
+    enable = true;
+    clock24 = true;
+    extraConfig = '' # used for less common options, intelligently combines if defined in multiple places.
+      # Reload Tmux config with greater ease
+      bind r source-file ~/.tmux.conf
+
+      # Switch panes with alt key
+      bind -n M-Left select-pane -L
+      bind -n M-Right select-pane -R
+      bind -n M-Up select-pane -U
+      bind -n M-Down select-pane -D
+
+      # Enable Mouse Control
+      set -g mouse on
+
+      # Status Bar
+      set -g status-left-length 20
+      set -g status-position bottom
+      set -g status-style fg=#99ffff
+      set -g status-right "#{?window_bigger,[#{window_offset_x}#,#{window_offset_y}], } %d-%b-%y | %H:%M "  
+    '';
+  };
+
   programs.git = {
     enable = true;
     userName = "Philip Roberts";
@@ -142,6 +166,7 @@ in
   programs.bash = {
     enable = true;
     enableCompletion = true;
+    #promptInit = ''PS1=\[\033]2;\h:\u:\w\007\]$PS1'';
     shellAliases = {
       # Basic Shell Interaction
       l="ls -la";
@@ -159,6 +184,7 @@ in
       home="sudoedit /etc/nixos/home.nix";
       switch="sudo nixos-rebuild switch";
       homeswitch="home && switch";
+      configswitch="config && switch";
       validate="sudo nixos-rebuild dry-build";
       llm_debug="cat /etc/nixos/home.nix > out.log && switch --show-trace &>> out.log";
 
