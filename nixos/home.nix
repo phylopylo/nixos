@@ -14,6 +14,8 @@ let
   requiredPackages = with pkgs; [
     brave
     google-chrome
+    bluez
+    blueman
   ];
 
   devTools = with pkgs; lib.optionals enableDevTools [
