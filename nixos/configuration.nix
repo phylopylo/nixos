@@ -89,7 +89,7 @@ in
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd \"sway --unsupported-gpu\"";
         user = "greeter";
       };
     };
@@ -130,6 +130,18 @@ in
   environment.systemPackages = with pkgs; [
     networkmanager
   ];
+
+  environment.variables = {
+    GBM_BACKEND = "nvidia-drm";
+    #__GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    LIBVA_DRIVER_NAME = "nvidia";
+    #NIXOS_OZONE_WL= "1";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    #MOZ_ENABLE_WAYLAND = "1";
+    NVD_BACKEND = "direct";
+    #XDG_SESSION_TYPE = "wayland";
+  };
 
   hardware.bluetooth = {
     enable = true;
