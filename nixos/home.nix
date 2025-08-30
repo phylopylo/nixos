@@ -2,6 +2,7 @@
 
 let
   username            = "ph";
+  enableBluetooth     = true;
   enableDevTools      = true;
   enableSway          = true;
   enableGnome         = false; # Nonfunctional. write (enableSway or enableGnome) assert. Add GNOME packages.
@@ -14,6 +15,11 @@ let
   requiredPackages = with pkgs; [
     brave
     google-chrome
+    spotify-player
+    cava
+  ];
+
+  bluetooth = with pkgs; lib.optionals enableBluetooth [
     bluez
     blueman
   ];
@@ -106,6 +112,7 @@ in
 
   # Packages
   home.packages = requiredPackages
+               ++ bluetooth
                ++ devTools
                ++ sway
                ++ desktopApps
@@ -129,6 +136,16 @@ in
         "Mod4+Return" = "exec ${pkgs.kitty}/bin/kitty";
         "Mod4+d" = "exec ${pkgs.rofi}/bin/rofi -show drun";
         "Mod4+Shift+z" = "exec ${pkgs.brave}/bin/brave";
+      };
+
+      window = {
+        border = 0;
+        titlebar = false;
+      };
+
+      gaps = {
+        inner = 5;
+        outer = 0;
       };
     };
   };

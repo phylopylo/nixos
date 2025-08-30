@@ -56,6 +56,7 @@ in
 
   environment.systemPackages = with pkgs; [
     networkmanager
+    tigervnc
   ];
 
   environment.variables = {
@@ -64,6 +65,10 @@ in
     LIBVA_DRIVER_NAME = "nvidia";
     WLR_NO_HARDWARE_CURSORS = "1";
     NVD_BACKEND = "direct";
+    GDK_SCALE = "2";
+    GDK_DPI_SCALE = "0.5";
+    QT_SCALE_FACTOR = "2";
+    XCURSOR_SIZE = "48";
   };
 
 
@@ -88,8 +93,9 @@ in
   services.xserver.enable = true;
   services.xserver.videoDrivers = ["nvidia"];
 
-  programs.sway.enable = true;
-  programs.sway.wrapperFeatures.gtk = false;
+  services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "sway";
+  services.xrdp.openFirewall = true;
 
   services.greetd = {
     enable = true;
