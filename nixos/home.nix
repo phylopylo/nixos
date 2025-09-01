@@ -27,6 +27,8 @@ let
   devTools = with pkgs; lib.optionals enableDevTools [
     tmux
     kitty
+    vscode
+    nodejs
   ];
 
   sway = with pkgs; lib.optionals enableSway [
