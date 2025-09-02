@@ -65,9 +65,9 @@ in
     LIBVA_DRIVER_NAME = "nvidia";
     WLR_NO_HARDWARE_CURSORS = "1";
     NVD_BACKEND = "direct";
-    GDK_SCALE = "2";
+    GDK_SCALE = "1.5";
     GDK_DPI_SCALE = "0.5";
-    QT_SCALE_FACTOR = "2";
+    QT_SCALE_FACTOR = "1.5";
     XCURSOR_SIZE = "48";
   };
 

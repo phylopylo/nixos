@@ -129,6 +129,13 @@ in
     enable = enableSway;
 
     config = {
+      output = {
+        "DP-1" = {
+          resolution="1920x1080";
+          position = "0,0";
+        };
+      };
+
       modifier = "Mod4"; # Set mod to Super key
 
       terminal = "${pkgs.kitty}";
@@ -146,8 +153,8 @@ in
       };
 
       gaps = {
-        inner = 5;
-        outer = 0;
+        inner = 10;
+        outer = 10;
       };
     };
   };
