@@ -28,7 +28,6 @@ let
     tmux
     kitty
     vscode
-    nodejs
   ];
 
   sway = with pkgs; lib.optionals enableSway [
@@ -216,6 +215,7 @@ in
       configswitch="config && switch";
       validate="sudo nixos-rebuild dry-build";
       llm_debug="cat /etc/nixos/home.nix > out.log && switch --show-trace &>> out.log";
+      researchmachine="ssh 172.16.120.2";
 
       # Everything Else
       b="vim -R ~/.bashrc"; # Readonly now because you should be using the nix config, not editing the bashrc yourself
