@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  hostName = "diary8";
+  hostName = "researchmachine";
   enableSSH = true;
 in
 {
@@ -18,11 +18,12 @@ in
     isNormalUser = true;
     description = "Philip Roberts";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
   };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.initrd.luks.devices."luks-d398677a-9b70-49c2-8d2f-0faa48f715fc".device = "/dev/disk/by-uuid/d398677a-9b70-49c2-8d2f-0faa48f715fc";
 
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -69,13 +70,14 @@ in
     GDK_DPI_SCALE = "0.5";
     QT_SCALE_FACTOR = "1.5";
     XCURSOR_SIZE = "48";
+    PATH="/home/ph/.local/bin:$PATH";
   };
 
 
   # ========== Network Configuration ==========
   networking.hostName = hostName;
   networking.networkmanager.enable = true;
-  networking.firewall.allowedTCPPorts = if enableSSH then [ 22 ] else [];
+  networking.firewall.allowedTCPPorts = if enableSSH then [ 22 3000 ] else [3000];
 
   services.openssh = {
     enable = enableSSH;
@@ -132,6 +134,20 @@ in
         # 'false'.
         FastConnectable = true;
       };
+    };
+  };
+
+  # =========== researchmachine Configuration ==========
+  services.gitea = {
+    enable = true;
+    appName = "researchmachine Collaborate";
+    database = {
+      type = "postgres";
+    };
+    settings.server = {
+      domain = "localhost";
+      ROOT_URL = "http://localhost/";
+      HTTP_PORT = 3000;
     };
   };
 }

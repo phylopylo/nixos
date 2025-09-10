@@ -28,6 +28,11 @@ let
     tmux
     kitty
     vscode
+    mdt
+    nodejs
+    uv
+    gnumake
+    gedit
   ];
 
   sway = with pkgs; lib.optionals enableSway [
@@ -39,6 +44,7 @@ let
   desktopApps = with pkgs; lib.optionals enableDesktopApps [
     libreoffice
     discord
+    vlc
   ];
 
   systemApps = with pkgs; lib.optionals enableSystemApps [
@@ -185,6 +191,19 @@ in
     '';
   };
 
+  programs.obs-studio = {
+    enable = true;
+
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-backgroundremoval
+      obs-pipewire-audio-capture
+      obs-vaapi #optional AMD hardware acceleration
+      obs-gstreamer
+      obs-vkcapture
+    ];
+  };
+
   programs.git = {
     enable = true;
     userName = "Philip Roberts";
@@ -215,7 +234,6 @@ in
       configswitch="config && switch";
       validate="sudo nixos-rebuild dry-build";
       llm_debug="cat /etc/nixos/home.nix > out.log && switch --show-trace &>> out.log";
-      researchmachine="ssh 172.16.120.2";
 
       # Everything Else
       b="vim -R ~/.bashrc"; # Readonly now because you should be using the nix config, not editing the bashrc yourself
