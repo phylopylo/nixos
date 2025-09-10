@@ -22,3 +22,9 @@ three things I want to do next:
 3. add flakes. Not really sure what this looks like in practice yet, but as I understand it it's like a package-lock.json for npm. That is, it gives you *true* reproducibility. You can't reproduce a system if you don't know what versions of the software you need.
 
 I'm up to my 45th generation as my bootloader tells me. pretty damn neat. zero friction in upgrading and adding onto my system.
+
+9/9/2025
+
+I got FDE working alongside some other services this weekend. FDE is configured easily during installation, or painfully after you set up your system.
+
+I also got gitea working for local file sharing.
