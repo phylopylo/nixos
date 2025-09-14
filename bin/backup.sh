@@ -5,7 +5,7 @@ set -euo pipefail
 NIX_CONFIG="/etc/nixos"
 REPOSITORY_LOCATION="$(pwd)"
 COMMIT_MESSAGE="Automated Update"
-DEST_DIR="$1"
+DEST_DIR="$(hostname)"
 
 echo "=== COPYING ${NIX_CONFIG} to ${REPOSITORY_LOCATION}/${DEST_DIR} ==="
 
