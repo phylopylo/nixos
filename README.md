@@ -1,7 +1,7 @@
 # nixos-config
 My Operating System
 
-8/17/25
+08/17/25
 
 Woo Hoo! Just got started with Nix. It's everything I ever dreamed of.
 
@@ -11,7 +11,7 @@ I have a script I used during high school through the end of undergrad to automa
 
 I think I'll try to convince all my friends to switch to NixOS too. It'd be sick as freak to be able to wget my config and get up and running on any available computer within seconds.
 
-8/27/26
+08/27/25
 
 Got a bunch of stuff working. nvidia drivers, basic applications, displays, my sway setup.
 
@@ -28,3 +28,7 @@ I'm up to my 45th generation as my bootloader tells me. pretty damn neat. zero f
 I got FDE working alongside some other services this weekend. FDE is configured easily during installation, or painfully after you set up your system.
 
 I also got gitea working for local file sharing.
+
+09/14/25
+
+Added hostname eval for individual backups for each machine. Reorganized configs.
